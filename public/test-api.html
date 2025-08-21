@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test API - Panel Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Conectividad API</h1>
+    <p>Esta página prueba la conectividad con el backend de Deno en <code>http://localhost:8001</code></p>
+    
+    <div class="test-section">
+        <h3>1. Test de Conectividad Básica</h3>
+        <button onclick="testBasicConnection()">Probar Conexión</button>
+        <div id="basic-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Test de Endpoint Root</h3>
+        <button onclick="testRootEndpoint()">Probar /</button>
+        <div id="root-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Test de Health Check</h3>
+        <button onclick="testHealthCheck()">Probar /health</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Test de Registro de Usuario</h3>
+        <button onclick="testUserRegistration()">Probar Registro</button>
+        <div id="register-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>5. Test de Login</h3>
+        <button onclick="testUserLogin()">Probar Login</button>
+        <div id="login-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>6. Test de Productos</h3>
+        <button onclick="testProducts()">Probar Productos</button>
+        <div id="products-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>7. Test de Dashboard</h3>
+        <button onclick="testDashboard()">Probar Dashboard</button>
+        <div id="dashboard-result"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8001';
+        
+        function showResult(elementId, success, message, data = null) {
+            const element = document.getElementById(elementId);
+            element.className = `test-section ${success ? 'success' : 'error'}`;
+            element.innerHTML = `
+                <h3>${element.querySelector('h3').textContent}</h3>
+                <button onclick="${element.querySelector('button').getAttribute('onclick')}">Probar ${element.querySelector('button').textContent.replace('Probar ', '')}</button>
+                <p><strong>${success ? '✅ ÉXITO' : '❌ ERROR'}:</strong> ${message}</p>
+                ${data ? `<pre>${JSON.stringify(data, null, 2)}</pre>` : ''}
+            `;
+        }
+        
+        async function testBasicConnection() {
+            try {
+                const response = await fetch(API_BASE_URL);
+                if (response.ok) {
+                    showResult('basic-result', true, 'Conexión exitosa al backend');
+                } else {
+                    showResult('basic-result', false, `Error HTTP: ${response.status}`);
+                }
+            } catch (error) {
+                showResult('basic-result', false, `Error de conexión: ${error.message}`);
+            }
+        }
+        
+        async function testRootEndpoint() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/`);
+                const data = await response.json();
+                if (response.ok) {
+                    showResult('root-result', true, 'Endpoint root funcionando', data);
+                } else {
+                    showResult('root-result', false, `Error HTTP: ${response.status}`);
+                }
+            } catch (error) {
+                showResult('root-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        async function testHealthCheck() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                if (response.ok) {
+                    showResult('health-result', true, 'Health check funcionando', data);
+                } else {
+                    showResult('health-result', false, `Error HTTP: ${response.status}`);
+                }
+            } catch (error) {
+                showResult('health-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        async function testUserRegistration() {
+            try {
+                const userData = {
+                    name: "Test User",
+                    email: `test${Date.now()}@example.com`,
+                    password: "test123",
+                    role: "user"
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showResult('register-result', true, 'Registro exitoso', data);
+                } else {
+                    showResult('register-result', false, `Error: ${data.error || 'Error desconocido'}`);
+                }
+            } catch (error) {
+                showResult('register-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        async function testUserLogin() {
+            try {
+                const loginData = {
+                    email: "admin@example.com",
+                    password: "admin123"
+                };
+                
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showResult('login-result', true, 'Login exitoso', data);
+                    // Guardar token para pruebas posteriores
+                    localStorage.setItem('testToken', data.data.token);
+                } else {
+                    showResult('login-result', false, `Error: ${data.error || 'Error desconocido'}`);
+                }
+            } catch (error) {
+                showResult('login-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        async function testProducts() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/products`);
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showResult('products-result', true, `Productos obtenidos: ${data.data.length}`, data);
+                } else {
+                    showResult('products-result', false, `Error: ${data.error || 'Error desconocido'}`);
+                }
+            } catch (error) {
+                showResult('products-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        async function testDashboard() {
+            try {
+                const token = localStorage.getItem('testToken');
+                if (!token) {
+                    showResult('dashboard-result', false, 'No hay token de autenticación. Ejecuta el login primero.');
+                    return;
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/api/products/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                if (response.ok && data.success) {
+                    showResult('dashboard-result', true, 'Dashboard funcionando', data);
+                } else {
+                    showResult('dashboard-result', false, `Error: ${data.error || 'Error desconocido'}`);
+                }
+            } catch (error) {
+                showResult('dashboard-result', false, `Error: ${error.message}`);
+            }
+        }
+        
+        // Auto-ejecutar test básico al cargar
+        window.addEventListener('load', testBasicConnection);
+    </script>
+</body>
+</html>

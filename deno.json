@@ -1,0 +1,15 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --watch src/app.ts",
+    "start": "deno run --allow-net --allow-read --allow-write src/app.ts",
+    "test": "deno test --allow-net --allow-read --allow-write",
+    "fmt": "deno fmt",
+    "lint": "deno lint"
+  },
+  "imports": {
+    "oak": "https://deno.land/x/oak@v12.6.1/mod.ts",
+    "validasaur": "https://deno.land/x/validasaur@v0.15.0/mod.ts",
+    "djwt": "https://deno.land/x/djwt@v2.9.1/mod.ts",
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts"
+  }
+}
