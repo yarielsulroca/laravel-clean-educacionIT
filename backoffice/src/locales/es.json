@@ -1,0 +1,67 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "confirmPassword": "Confirmar Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "keepMeLoggedIn": "Mantener sesión iniciada",
+    "termsAndConditions": "Términos y Condiciones",
+    "privacyPolicy": "Política de Privacidad",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "enterEmailPassword": "Ingresa tu correo y contraseña para iniciar sesión",
+    "enterEmailPasswordSignUp": "Ingresa tu información para registrarte",
+    "pleaseCompleteFields": "Por favor completa todos los campos",
+    "acceptTerms": "Debes aceptar los términos y condiciones",
+    "signingIn": "Iniciando sesión...",
+    "signingUp": "Registrando...",
+    "backToDashboard": "Volver al dashboard"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Bienvenido",
+    "overview": "Resumen",
+    "analytics": "Analíticas",
+    "reports": "Reportes",
+    "settings": "Configuración"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "Usuarios",
+    "products": "Productos",
+    "orders": "Pedidos",
+    "analytics": "Analíticas",
+    "settings": "Configuración"
+  },
+  "header": {
+    "search": "Buscar o escribir comando...",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "user": "Usuario",
+    "userExample": "usuario@ejemplo.com",
+    "editProfile": "Editar perfil",
+    "accountSettings": "Configuración de cuenta",
+    "support": "Soporte",
+    "signOut": "Cerrar Sesión"
+  }
+}
